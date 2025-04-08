@@ -15,18 +15,16 @@ private:
     void initializeBoard() {
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
-                // Создаем клетку доски
+
                 board[i][j].setSize(sf::Vector2f(CELL_SIZE, CELL_SIZE));
                 board[i][j].setPosition(i * CELL_SIZE, j * CELL_SIZE);
 
-                // Чередуем цвета клеток
                 if ((i + j) % 2 == 0) {
                     board[i][j].setFillColor(sf::Color(210, 180, 140)); // Бежевый
                 } else {
                     board[i][j].setFillColor(sf::Color(139, 69, 19));   // Коричневый
                 }
 
-                // Расставляем шашки
                 if ((i + j) % 2 != 0 && j < 3) {
                     pieces[i][j].setRadius(PIECE_RADIUS);
                     pieces[i][j].setFillColor(sf::Color::White);
@@ -75,7 +73,6 @@ private:
 
                     if (x >= 0 && x < 8 && y >= 0 && y < 8) {
                         std::cout << "Клетка: " << x << ", " << y << std::endl;
-                        // Здесь будет логика перемещения шашек
                     }
                 }
             }
@@ -85,14 +82,12 @@ private:
     void render() {
         window.clear(sf::Color::White);
 
-        // Рисуем доску
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 window.draw(board[i][j]);
             }
         }
 
-        // Рисуем шашки
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 if (pieces[i][j].getRadius() > 0) {
