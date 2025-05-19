@@ -31,14 +31,85 @@ private:
     sf::CircleShape kingShape;
     sf::Font font;
 
+    bool isValidPosition(int row, int col) const {
+        return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
+    }
+
+    void checkDirection(int row, int col, int dr, int dc, bool checkCaptures) {
+        if (board[row][col].type == PieceType::Man) {
+            int newRow = row + dr;
+            int newCol = col + dc;
+            int jumpRow = row + 2 * dr;
+            int jumpCol = col + 2 * dc;
+
+            if (isValidPosition(newRow, newCol)) {
+                if (board[newRow][newCol].color == PieceColor::None && !checkCaptures) {
+                    possibleMoves.emplace_back(newRow, newCol);
+                }
+                else if (canCapture(row, col, newRow, newCol, jumpRow, jumpCol)) {
+                    captureMoves.emplace_back(jumpRow, jumpCol);
+                }
+            }
+        }
+        else {
+            int r = row + dr;
+            int c = col + dc;
+            bool foundEnemy = false;
+
+            while (isValidPosition(r, c)) {
+                if (board[r][c].color != PieceColor::None) {
+                    if (board[r][c].color == currentPlayer) break;
+                    if (!foundEnemy) {
+                        foundEnemy = true;
+                        int jumpR = r + dr;
+                        int jumpC = c + dc;
+
+                        while (isValidPosition(jumpR, jumpC) && board[jumpR][jumpC].color == PieceColor::None) {
+                            captureMoves.emplace_back(jumpR, jumpC);
+                            jumpR += dr;
+                            jumpC += dc;
+                        }
+                    }
+                    break;
+                }
+                if (!checkCaptures) possibleMoves.emplace_back(r, c);
+                r += dr;
+                c += dc;
+            }
+        }
+    }
+
+    void findKingCaptures(int row, int col, int dr, int dc) {
+        int r = row + dr;
+        int c = col + dc;
+        bool foundEnemy = false;
+
+        while (isValidPosition(r, c)) {
+            if (board[r][c].color != PieceColor::None) {
+                if (board[r][c].color == currentPlayer) break;
+                if (!foundEnemy) {
+                    foundEnemy = true;
+                    int jumpR = r + dr;
+                    int jumpC = c + dc;
+
+                    while (isValidPosition(jumpR, jumpC) && board[jumpR][jumpC].color == PieceColor::None) {
+                        captureMoves.emplace_back(jumpR, jumpC);
+                        jumpR += dr;
+                        jumpC += dc;
+                    }
+                }
+                break;
+            }
+            r += dr;
+            c += dc;
+        }
+    }
+
 public:
     CheckersGame() : window(sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), "Шашки") {
         window.setVerticalSyncEnabled(true);
-
-        // Инициализация доски
         board.resize(BOARD_SIZE, std::vector<Piece>(BOARD_SIZE));
 
-        // Настройка фигур
         pieceShape.setRadius(CELL_SIZE / 2 - 10);
         pieceShape.setOutlineThickness(2);
         pieceShape.setOutlineColor(sf::Color::Black);
@@ -46,11 +117,9 @@ public:
         kingShape.setRadius(CELL_SIZE / 2 - 10);
         kingShape.setOutlineThickness(2);
         kingShape.setOutlineColor(sf::Color::Black);
-        kingShape.setPointCount(6); // Шестиугольник для дамок
+        kingShape.setPointCount(6);
 
-        // Загрузка стандартного шрифта
         if (!font.loadFromFile("arial.ttf")) {
-            // Если шрифт не загружен, создаем базовый
             font.loadFromMemory(NULL, 0);
         }
 
@@ -58,7 +127,6 @@ public:
     }
 
     void initializeBoard() {
-        // Расстановка белых шашек
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < BOARD_SIZE; ++col) {
                 if ((row + col) % 2 == 1) {
@@ -67,7 +135,6 @@ public:
             }
         }
 
-        // Расстановка черных шашек
         for (int row = 5; row < BOARD_SIZE; ++row) {
             for (int col = 0; col < BOARD_SIZE; ++col) {
                 if ((row + col) % 2 == 1) {
@@ -91,10 +158,8 @@ public:
                 window.close();
             }
 
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left) {
-                    handleMouseClick(event.mouseButton.x, event.mouseButton.y);
-                }
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                handleMouseClick(event.mouseButton.x, event.mouseButton.y);
             }
         }
     }
@@ -103,16 +168,12 @@ public:
         int col = x / CELL_SIZE;
         int row = y / CELL_SIZE;
 
-        if (col < 0 || col >= BOARD_SIZE || row < 0 || row >= BOARD_SIZE) {
-            return;
-        }
+        if (!isValidPosition(row, col)) return;
 
         checkForMandatoryCaptures();
 
         if (board[row][col].color == currentPlayer) {
-            if (mustCapture && !canPieceCapture(row, col)) {
-                return;
-            }
+            if (mustCapture && !canPieceCapture(row, col)) return;
 
             selectedPiecePos = {row, col};
             board[row][col].selected = true;
@@ -121,18 +182,15 @@ public:
         else if (isMoving && isPossibleMove(row, col)) {
             movePiece(selectedPiecePos.x, selectedPiecePos.y, row, col);
 
-            if (abs(selectedPiecePos.x - row) == 2) {
-                if (canContinueCapturing(row, col)) {
-                    selectedPiecePos = {row, col};
-                    board[row][col].selected = true;
-                    calculatePossibleMoves(row, col);
-                    return;
-                }
+            if (abs(selectedPiecePos.x - row) == 2 && canContinueCapturing(row, col)) {
+                selectedPiecePos = {row, col};
+                board[row][col].selected = true;
+                calculatePossibleMoves(row, col);
+                return;
             }
 
             currentPlayer = (currentPlayer == PieceColor::White) ? PieceColor::Black : PieceColor::White;
-            isMoving = false;
-            mustCapture = false;
+            isMoving = mustCapture = false;
             clearPossibleMoves();
 
             if (checkWinCondition()) {
@@ -156,36 +214,33 @@ public:
 
     bool canPieceCapture(int row, int col) {
         if (board[row][col].type == PieceType::Man) {
-            int direction = (board[row][col].color == PieceColor::White) ? 1 : -1;
-
-            if (canCapture(row, col, row + direction, col - 1, row + 2*direction, col - 2) ||
-                canCapture(row, col, row + direction, col + 1, row + 2*direction, col + 2)) {
-                return true;
+            for (int dr : {-1, 1}) {
+                for (int dc : {-1, 1}) {
+                    if (canCapture(row, col, row + dr, col + dc, row + 2*dr, col + 2*dc)) {
+                        return true;
+                    }
+                }
             }
         }
         else if (board[row][col].type == PieceType::King) {
-            for (int dr = -1; dr <= 1; dr += 2) {
-                for (int dc = -1; dc <= 1; dc += 2) {
+            for (int dr : {-1, 1}) {
+                for (int dc : {-1, 1}) {
                     int r = row + dr;
                     int c = col + dc;
-                    bool foundOpponent = false;
+                    bool foundEnemy = false;
 
-                    while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE) {
+                    while (isValidPosition(r, c)) {
                         if (board[r][c].color != PieceColor::None) {
-                            if (board[r][c].color == currentPlayer) {
-                                break;
-                            }
-                            else {
-                                if (foundOpponent) break;
-                                foundOpponent = true;
-                                int nextR = r + dr;
-                                int nextC = c + dc;
-                                if (nextR >= 0 && nextR < BOARD_SIZE && nextC >= 0 && nextC < BOARD_SIZE &&
-                                    board[nextR][nextC].color == PieceColor::None) {
+                            if (board[r][c].color == currentPlayer) break;
+                            if (!foundEnemy) {
+                                foundEnemy = true;
+                                int jumpR = r + dr;
+                                int jumpC = c + dc;
+                                if (isValidPosition(jumpR, jumpC) && board[jumpR][jumpC].color == PieceColor::None) {
                                     return true;
                                 }
-                                break;
                             }
+                            break;
                         }
                         r += dr;
                         c += dc;
@@ -196,48 +251,12 @@ public:
         return false;
     }
 
-    bool canContinueCapturing(int row, int col) {
-        if (board[row][col].type == PieceType::Man) {
-            int direction = (board[row][col].color == PieceColor::White) ? 1 : -1;
-
-            if (canCapture(row, col, row + direction, col - 1, row + 2*direction, col - 2) ||
-                canCapture(row, col, row + direction, col + 1, row + 2*direction, col + 2) ||
-                canCapture(row, col, row - direction, col - 1, row - 2*direction, col - 2) ||
-                canCapture(row, col, row - direction, col + 1, row - 2*direction, col + 2)) {
-                return true;
-            }
-        }
-        else if (board[row][col].type == PieceType::King) {
-            for (int dr = -1; dr <= 1; dr += 2) {
-                for (int dc = -1; dc <= 1; dc += 2) {
-                    int r = row + dr;
-                    int c = col + dc;
-                    bool foundOpponent = false;
-
-                    while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE) {
-                        if (board[r][c].color != PieceColor::None) {
-                            if (board[r][c].color == currentPlayer) {
-                                break;
-                            }
-                            else {
-                                if (foundOpponent) break;
-                                foundOpponent = true;
-                                int nextR = r + dr;
-                                int nextC = c + dc;
-                                if (nextR >= 0 && nextR < BOARD_SIZE && nextC >= 0 && nextC < BOARD_SIZE &&
-                                    board[nextR][nextC].color == PieceColor::None) {
-                                    return true;
-                                }
-                                break;
-                            }
-                        }
-                        r += dr;
-                        c += dc;
-                    }
-                }
-            }
-        }
-        return false;
+    bool canCapture(int fromRow, int fromCol, int midRow, int midCol, int toRow, int toCol) {
+        return isValidPosition(toRow, toCol) &&
+               board[toRow][toCol].color == PieceColor::None &&
+               isValidPosition(midRow, midCol) &&
+               board[midRow][midCol].color != PieceColor::None &&
+               board[midRow][midCol].color != board[fromRow][fromCol].color;
     }
 
     void calculatePossibleMoves(int row, int col) {
@@ -246,47 +265,53 @@ public:
         isMoving = true;
 
         if (board[row][col].type == PieceType::Man) {
-            int direction = (board[row][col].color == PieceColor::White) ? 1 : -1;
-
-            if (!mustCapture) {
-                checkMove(row, col, row + direction, col - 1);
-                checkMove(row, col, row + direction, col + 1);
+            for (int dr : {-1, 1}) {
+                for (int dc : {-1, 1}) {
+                    checkDirection(row, col, dr, dc, mustCapture);
+                }
             }
-
-            checkCapture(row, col, row + direction, col - 1, row + 2*direction, col - 2);
-            checkCapture(row, col, row + direction, col + 1, row + 2*direction, col + 2);
         }
-        else if (board[row][col].type == PieceType::King) {
-            for (int dr = -1; dr <= 1; dr += 2) {
-                for (int dc = -1; dc <= 1; dc += 2) {
+        else {
+            for (int dr : {-1, 1}) {
+                for (int dc : {-1, 1}) {
+                    findKingCaptures(row, col, dr, dc);
+                    if (!mustCapture) checkDirection(row, col, dr, dc, false);
+                }
+            }
+        }
+
+        if (!captureMoves.empty()) possibleMoves = captureMoves;
+    }
+
+    bool canContinueCapturing(int row, int col) {
+        if (board[row][col].type == PieceType::Man) {
+            for (int dr : {-1, 1}) {
+                for (int dc : {-1, 1}) {
+                    if (canCapture(row, col, row + dr, col + dc, row + 2*dr, col + 2*dc)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        else {
+            for (int dr : {-1, 1}) {
+                for (int dc : {-1, 1}) {
                     int r = row + dr;
                     int c = col + dc;
-                    bool foundOpponent = false;
+                    bool foundEnemy = false;
 
-                    while (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE) {
+                    while (isValidPosition(r, c)) {
                         if (board[r][c].color != PieceColor::None) {
-                            if (board[r][c].color == currentPlayer) {
-                                break;
-                            }
-                            else {
-                                if (foundOpponent) break;
-                                foundOpponent = true;
-                                int nextR = r + dr;
-                                int nextC = c + dc;
-                                if (nextR >= 0 && nextR < BOARD_SIZE && nextC >= 0 && nextC < BOARD_SIZE &&
-                                    board[nextR][nextC].color == PieceColor::None) {
-                                    if (mustCapture) {
-                                        captureMoves.push_back({nextR, nextC});
-                                    }
-                                    else {
-                                        possibleMoves.push_back({nextR, nextC});
-                                    }
+                            if (board[r][c].color == currentPlayer) break;
+                            if (!foundEnemy) {
+                                foundEnemy = true;
+                                int jumpR = r + dr;
+                                int jumpC = c + dc;
+                                if (isValidPosition(jumpR, jumpC) && board[jumpR][jumpC].color == PieceColor::None) {
+                                    return true;
                                 }
-                                break;
                             }
-                        }
-                        else if (!mustCapture && !foundOpponent) {
-                            possibleMoves.push_back({r, c});
+                            break;
                         }
                         r += dr;
                         c += dc;
@@ -294,35 +319,7 @@ public:
                 }
             }
         }
-
-        if (!captureMoves.empty()) {
-            possibleMoves = captureMoves;
-        }
-    }
-
-    bool canCapture(int fromRow, int fromCol, int midRow, int midCol, int toRow, int toCol) {
-        if (toRow >= 0 && toRow < BOARD_SIZE && toCol >= 0 && toCol < BOARD_SIZE) {
-            if (board[midRow][midCol].color != PieceColor::None &&
-                board[midRow][midCol].color != board[fromRow][fromCol].color &&
-                board[toRow][toCol].color == PieceColor::None) {
-                return true;
-            }
-        }
         return false;
-    }
-
-    void checkMove(int fromRow, int fromCol, int toRow, int toCol) {
-        if (toRow >= 0 && toRow < BOARD_SIZE && toCol >= 0 && toCol < BOARD_SIZE) {
-            if (board[toRow][toCol].color == PieceColor::None) {
-                possibleMoves.push_back({toRow, toCol});
-            }
-        }
-    }
-
-    void checkCapture(int fromRow, int fromCol, int midRow, int midCol, int toRow, int toCol) {
-        if (canCapture(fromRow, fromCol, midRow, midCol, toRow, toCol)) {
-            captureMoves.push_back({toRow, toCol});
-        }
     }
 
     bool isPossibleMove(int row, int col) {
@@ -361,11 +358,9 @@ public:
             for (const auto& piece : row) {
                 if (piece.color == PieceColor::White) whiteExists = true;
                 if (piece.color == PieceColor::Black) blackExists = true;
-
                 if (whiteExists && blackExists) return false;
             }
         }
-
         return true;
     }
 
@@ -383,7 +378,7 @@ public:
     void render() {
         window.clear();
 
-        // Отрисовка доски
+        // Draw board
         for (int row = 0; row < BOARD_SIZE; ++row) {
             for (int col = 0; col < BOARD_SIZE; ++col) {
                 sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
@@ -393,7 +388,7 @@ public:
             }
         }
 
-        // Отрисовка возможных ходов
+        // Highlight possible moves
         for (const auto& pos : possibleMoves) {
             sf::RectangleShape highlight(sf::Vector2f(CELL_SIZE - 10, CELL_SIZE - 10));
             highlight.setPosition(pos.y * CELL_SIZE + 5, pos.x * CELL_SIZE + 5);
@@ -401,7 +396,7 @@ public:
             window.draw(highlight);
         }
 
-        // Отрисовка фигур
+        // Draw pieces
         for (int row = 0; row < BOARD_SIZE; ++row) {
             for (int col = 0; col < BOARD_SIZE; ++col) {
                 if (board[row][col].color != PieceColor::None) {
@@ -412,7 +407,7 @@ public:
                         pieceShape.setPosition(position.x - pieceShape.getRadius(),
                                             position.y - pieceShape.getRadius());
                         pieceShape.setFillColor(board[row][col].color == PieceColor::White ?
-                                            sf::Color::White : sf::Color(150, 0, 0)); // Темно-красный
+                                            sf::Color::White : sf::Color(150, 0, 0));
                         window.draw(pieceShape);
                     } else {
                         kingShape.setPosition(position.x - kingShape.getRadius(),
@@ -434,7 +429,7 @@ public:
             }
         }
 
-        // Отображение текущего игрока
+        // Draw current player
         sf::Text text;
         text.setFont(font);
         text.setString("Текущий игрок: " + std::string(currentPlayer == PieceColor::White ? "Белые" : "Черные"));
