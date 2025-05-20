@@ -37,21 +37,28 @@ private:
 
     void checkDirection(int row, int col, int dr, int dc, bool checkCaptures) {
         if (board[row][col].type == PieceType::Man) {
-            int newRow = row + dr;
-            int newCol = col + dc;
-            int jumpRow = row + 2 * dr;
-            int jumpCol = col + 2 * dc;
+            int forward_dir = (board[row][col].color == PieceColor::White) ? 1 : -1;
 
-            if (isValidPosition(newRow, newCol)) {
-                if (board[newRow][newCol].color == PieceColor::None && !checkCaptures) {
-                    possibleMoves.emplace_back(newRow, newCol);
-                }
-                else if (canCapture(row, col, newRow, newCol, jumpRow, jumpCol)) {
+            if (checkCaptures) {
+                int newRow = row + dr;
+                int newCol = col + dc;
+                int jumpRow = row + 2 * dr;
+                int jumpCol = col + 2 * dc;
+
+                if (canCapture(row, col, newRow, newCol, jumpRow, jumpCol)) {
                     captureMoves.emplace_back(jumpRow, jumpCol);
                 }
+            } else {
+                if (dr != forward_dir) return;
+
+                int newRow = row + dr;
+                int newCol = col + dc;
+
+                if (isValidPosition(newRow, newCol) && board[newRow][newCol].color == PieceColor::None) {
+                    possibleMoves.emplace_back(newRow, newCol);
+                }
             }
-        }
-        else {
+        } else {
             int r = row + dr;
             int c = col + dc;
             bool foundEnemy = false;
@@ -178,8 +185,7 @@ public:
             selectedPiecePos = {row, col};
             board[row][col].selected = true;
             calculatePossibleMoves(row, col);
-        }
-        else if (isMoving && isPossibleMove(row, col)) {
+        } else if (isMoving && isPossibleMove(row, col)) {
             movePiece(selectedPiecePos.x, selectedPiecePos.y, row, col);
 
             if (abs(selectedPiecePos.x - row) == 2 && canContinueCapturing(row, col)) {
@@ -221,8 +227,7 @@ public:
                     }
                 }
             }
-        }
-        else if (board[row][col].type == PieceType::King) {
+        } else {
             for (int dr : {-1, 1}) {
                 for (int dc : {-1, 1}) {
                     int r = row + dr;
@@ -265,13 +270,18 @@ public:
         isMoving = true;
 
         if (board[row][col].type == PieceType::Man) {
+            // Проверка взятий во всех направлениях
             for (int dr : {-1, 1}) {
                 for (int dc : {-1, 1}) {
-                    checkDirection(row, col, dr, dc, mustCapture);
+                    checkDirection(row, col, dr, dc, true);
                 }
             }
-        }
-        else {
+
+            int forward_dir = (board[row][col].color == PieceColor::White) ? 1 : -1;
+            for (int dc : {-1, 1}) {
+                checkDirection(row, col, forward_dir, dc, false);
+            }
+        } else {
             for (int dr : {-1, 1}) {
                 for (int dc : {-1, 1}) {
                     findKingCaptures(row, col, dr, dc);
@@ -292,8 +302,7 @@ public:
                     }
                 }
             }
-        }
-        else {
+        } else {
             for (int dr : {-1, 1}) {
                 for (int dc : {-1, 1}) {
                     int r = row + dr;
@@ -378,7 +387,6 @@ public:
     void render() {
         window.clear();
 
-        // Draw board
         for (int row = 0; row < BOARD_SIZE; ++row) {
             for (int col = 0; col < BOARD_SIZE; ++col) {
                 sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
@@ -388,7 +396,6 @@ public:
             }
         }
 
-        // Highlight possible moves
         for (const auto& pos : possibleMoves) {
             sf::RectangleShape highlight(sf::Vector2f(CELL_SIZE - 10, CELL_SIZE - 10));
             highlight.setPosition(pos.y * CELL_SIZE + 5, pos.x * CELL_SIZE + 5);
@@ -396,7 +403,6 @@ public:
             window.draw(highlight);
         }
 
-        // Draw pieces
         for (int row = 0; row < BOARD_SIZE; ++row) {
             for (int col = 0; col < BOARD_SIZE; ++col) {
                 if (board[row][col].color != PieceColor::None) {
@@ -429,7 +435,6 @@ public:
             }
         }
 
-        // Draw current player
         sf::Text text;
         text.setFont(font);
         text.setString("Текущий игрок: " + std::string(currentPlayer == PieceColor::White ? "Белые" : "Черные"));

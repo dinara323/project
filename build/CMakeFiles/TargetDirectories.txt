@@ -1,0 +1,3 @@
+/home/dinara/project-1/build/CMakeFiles/VisualIllusion.dir
+/home/dinara/project-1/build/CMakeFiles/edit_cache.dir
+/home/dinara/project-1/build/CMakeFiles/rebuild_cache.dir
