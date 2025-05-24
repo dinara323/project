@@ -1,5 +1,6 @@
-CMakeFiles/VisualIllusion.dir/main.cpp.o: /home/dinara/project-1/main.cpp \
- /usr/include/stdc-predef.h /home/dinara/project-1/checkers.h \
+CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o: \
+ /home/dinara/project-1/Checkers/checkers.cpp /usr/include/stdc-predef.h \
+ /home/dinara/project-1/Checkers/checkers.h \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \

@@ -49,5 +49,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/VisualIllusion.dir/DependInfo.cmake"
+  "CMakeFiles/CheckersGame.dir/DependInfo.cmake"
   )

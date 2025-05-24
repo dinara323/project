@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/dinara/project-1
+CXX_INCLUDES = -I/home/dinara/project-1/Checkers
 
 CXX_FLAGS = -std=gnu++17
 

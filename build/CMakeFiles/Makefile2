@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /home/dinara/project-1/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/VisualIllusion.dir/all
+all: CMakeFiles/CheckersGame.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/VisualIllusion.dir/clean
+clean: CMakeFiles/CheckersGame.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/VisualIllusion.dir
+# Target rules for target CMakeFiles/CheckersGame.dir
 
 # All Build rule for target.
-CMakeFiles/VisualIllusion.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VisualIllusion.dir/build.make CMakeFiles/VisualIllusion.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VisualIllusion.dir/build.make CMakeFiles/VisualIllusion.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/dinara/project-1/build/CMakeFiles --progress-num=1,2 "Built target VisualIllusion"
-.PHONY : CMakeFiles/VisualIllusion.dir/all
+CMakeFiles/CheckersGame.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/dinara/project-1/build/CMakeFiles --progress-num=1,2,3 "Built target CheckersGame"
+.PHONY : CMakeFiles/CheckersGame.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/VisualIllusion.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dinara/project-1/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/VisualIllusion.dir/all
+CMakeFiles/CheckersGame.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dinara/project-1/build/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/CheckersGame.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dinara/project-1/build/CMakeFiles 0
-.PHONY : CMakeFiles/VisualIllusion.dir/rule
+.PHONY : CMakeFiles/CheckersGame.dir/rule
 
 # Convenience name for target.
-VisualIllusion: CMakeFiles/VisualIllusion.dir/rule
-.PHONY : VisualIllusion
+CheckersGame: CMakeFiles/CheckersGame.dir/rule
+.PHONY : CheckersGame
 
 # clean rule for target.
-CMakeFiles/VisualIllusion.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VisualIllusion.dir/build.make CMakeFiles/VisualIllusion.dir/clean
-.PHONY : CMakeFiles/VisualIllusion.dir/clean
+CMakeFiles/CheckersGame.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/clean
+.PHONY : CMakeFiles/CheckersGame.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

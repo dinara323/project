@@ -117,24 +117,48 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named VisualIllusion
+# Target rules for targets named CheckersGame
 
 # Build rule for target.
-VisualIllusion: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 VisualIllusion
-.PHONY : VisualIllusion
+CheckersGame: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CheckersGame
+.PHONY : CheckersGame
 
 # fast build rule for target.
-VisualIllusion/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VisualIllusion.dir/build.make CMakeFiles/VisualIllusion.dir/build
-.PHONY : VisualIllusion/fast
+CheckersGame/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/build
+.PHONY : CheckersGame/fast
+
+Checkers/checkers.o: Checkers/checkers.cpp.o
+.PHONY : Checkers/checkers.o
+
+# target to build an object file
+Checkers/checkers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o
+.PHONY : Checkers/checkers.cpp.o
+
+Checkers/checkers.i: Checkers/checkers.cpp.i
+.PHONY : Checkers/checkers.i
+
+# target to preprocess a source file
+Checkers/checkers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.i
+.PHONY : Checkers/checkers.cpp.i
+
+Checkers/checkers.s: Checkers/checkers.cpp.s
+.PHONY : Checkers/checkers.s
+
+# target to generate assembly for a file
+Checkers/checkers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.s
+.PHONY : Checkers/checkers.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VisualIllusion.dir/build.make CMakeFiles/VisualIllusion.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -142,7 +166,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VisualIllusion.dir/build.make CMakeFiles/VisualIllusion.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -150,7 +174,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VisualIllusion.dir/build.make CMakeFiles/VisualIllusion.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CheckersGame.dir/build.make CMakeFiles/CheckersGame.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -161,7 +185,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... VisualIllusion"
+	@echo "... CheckersGame"
+	@echo "... Checkers/checkers.o"
+	@echo "... Checkers/checkers.i"
+	@echo "... Checkers/checkers.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/CheckersGame.dir/main.cpp.o CMakeFiles/CheckersGame.dir/checkers.cpp.o -o CheckersGame  /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.6.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1 
+/usr/bin/c++ CMakeFiles/CheckersGame.dir/main.cpp.o CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o -o CheckersGame  /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.6.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1 

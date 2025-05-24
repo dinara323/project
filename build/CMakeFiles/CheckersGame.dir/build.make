@@ -83,30 +83,30 @@ CMakeFiles/CheckersGame.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CheckersGame.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dinara/project-1/main.cpp -o CMakeFiles/CheckersGame.dir/main.cpp.s
 
-CMakeFiles/CheckersGame.dir/checkers.cpp.o: CMakeFiles/CheckersGame.dir/flags.make
-CMakeFiles/CheckersGame.dir/checkers.cpp.o: /home/dinara/project-1/checkers.cpp
-CMakeFiles/CheckersGame.dir/checkers.cpp.o: CMakeFiles/CheckersGame.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dinara/project-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CheckersGame.dir/checkers.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CheckersGame.dir/checkers.cpp.o -MF CMakeFiles/CheckersGame.dir/checkers.cpp.o.d -o CMakeFiles/CheckersGame.dir/checkers.cpp.o -c /home/dinara/project-1/checkers.cpp
+CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o: CMakeFiles/CheckersGame.dir/flags.make
+CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o: /home/dinara/project-1/Checkers/checkers.cpp
+CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o: CMakeFiles/CheckersGame.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dinara/project-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o -MF CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o.d -o CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o -c /home/dinara/project-1/Checkers/checkers.cpp
 
-CMakeFiles/CheckersGame.dir/checkers.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CheckersGame.dir/checkers.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dinara/project-1/checkers.cpp > CMakeFiles/CheckersGame.dir/checkers.cpp.i
+CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dinara/project-1/Checkers/checkers.cpp > CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.i
 
-CMakeFiles/CheckersGame.dir/checkers.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CheckersGame.dir/checkers.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dinara/project-1/checkers.cpp -o CMakeFiles/CheckersGame.dir/checkers.cpp.s
+CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dinara/project-1/Checkers/checkers.cpp -o CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.s
 
 # Object files for target CheckersGame
 CheckersGame_OBJECTS = \
 "CMakeFiles/CheckersGame.dir/main.cpp.o" \
-"CMakeFiles/CheckersGame.dir/checkers.cpp.o"
+"CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o"
 
 # External object files for target CheckersGame
 CheckersGame_EXTERNAL_OBJECTS =
 
 CheckersGame: CMakeFiles/CheckersGame.dir/main.cpp.o
-CheckersGame: CMakeFiles/CheckersGame.dir/checkers.cpp.o
+CheckersGame: CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o
 CheckersGame: CMakeFiles/CheckersGame.dir/build.make
 CheckersGame: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.6.1
 CheckersGame: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1

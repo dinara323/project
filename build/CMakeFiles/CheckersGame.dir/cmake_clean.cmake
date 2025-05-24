@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/CheckersGame.dir/checkers.cpp.o"
-  "CMakeFiles/CheckersGame.dir/checkers.cpp.o.d"
+  "CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o"
+  "CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o.d"
   "CMakeFiles/CheckersGame.dir/main.cpp.o"
   "CMakeFiles/CheckersGame.dir/main.cpp.o.d"
   "CheckersGame"

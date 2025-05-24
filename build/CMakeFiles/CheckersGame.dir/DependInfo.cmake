@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/dinara/project-1/checkers.cpp" "CMakeFiles/CheckersGame.dir/checkers.cpp.o" "gcc" "CMakeFiles/CheckersGame.dir/checkers.cpp.o.d"
+  "/home/dinara/project-1/Checkers/checkers.cpp" "CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o" "gcc" "CMakeFiles/CheckersGame.dir/Checkers/checkers.cpp.o.d"
   "/home/dinara/project-1/main.cpp" "CMakeFiles/CheckersGame.dir/main.cpp.o" "gcc" "CMakeFiles/CheckersGame.dir/main.cpp.o.d"
   )
 
